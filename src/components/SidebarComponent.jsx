@@ -7,31 +7,47 @@ const SidebarComponent = ({ isOpen, onClose }) => {
     // Set active menu based on current route
     if (location.pathname === '/') return 'home';
     if (location.pathname === '/profile') return 'profile';
-    return 'lottery';
+    if (location.pathname === '/wallet') return 'wallet';
+    if (location.pathname === '/tg-token') return 'tgToken';
+    if (location.pathname === '/cashback-history') return 'cashbackHistory';
+    if (location.pathname === '/transaction') return 'transaction';
+    if (location.pathname === '/activity') return 'activity';
+    if (location.pathname === '/trx-hash') return 'trxHash';
+    if (location.pathname === '/lottery') return 'lottery';
+    if (location.pathname === '/winning-information') return 'winningInfo';
+    if (location.pathname === '/today-earn-chart') return 'earningChart';
+    return 'home';
   });
   const [winningInfoExpanded, setWinningInfoExpanded] = useState(false);
 
   const menuItems = [
     { id: 'home', label: 'Home', icon: '🏠', path: '/' },
     { id: 'profile', label: 'Profile', icon: '👤', path: '/profile' },
-    { id: 'activity', label: 'Activity', icon: '📊', path: '/activity' },
-    { id: 'agency', label: 'Agency', icon: '👥', path: '/agency' },
     { id: 'wallet', label: 'Wallet', icon: '💼', path: '/wallet' },
-    { id: 'transaction', label: 'Transaction', icon: '💳', path: '/transaction' },
-    { id: 'setting', label: 'Setting', icon: '⚙️', path: '/setting' },
     { id: 'tgToken', label: 'TG Token', icon: '🪙', path: '/tg-token' },
-    { id: 'lottery', label: 'Lottery', icon: '🎰', path: '/lottery' },
+    { id: 'cashbackHistory', label: 'Cashback History', icon: '💰', path: '/cashback-history' },
+    { id: 'transaction', label: 'Transaction', icon: '💳', path: '/transaction' },
+    { id: 'activity', label: 'Activity', icon: '📊', path: '/activity' },
     { id: 'trxHash', label: 'TRX Hash', icon: '₿', path: '/trx-hash' },
+    { id: 'lottery', label: 'Lottery', icon: '🎰', path: '/lottery' },
+    { id: 'todayEarnChart', label: "Today's Earning Chart", icon: '📊', path: '/today-earn-chart' },
+  ];
+
+  const gameCategories = [
+    { id: 'lottery', label: 'Lottery', icon: '🎰', path: '/lottery' },
     { id: 'slot', label: 'Slot', icon: '🎰', path: '/slot' },
-    { id: 'recents', label: 'Recents', icon: '🕒', path: '/recents' },
+    { id: 'records', label: 'Records', icon: '📄', path: '/records' },
     { id: 'betData', label: 'Bet Data', icon: '📈', path: '/bet-data' },
-    { id: 'winningInfo', label: 'Winning Information', icon: '🏆', path: '/winning-information' },
   ];
 
   const winningInfoItems = [
-    { id: 'earningChart', label: "Today's Earning Chart", icon: '📊' },
-    { id: 'betHistory', label: 'Bet History', icon: '📄' },
-    { id: 'notification', label: 'Notification', icon: '🔔' },
+    { id: 'earningChart', label: "Today's Earning Chart", icon: '📊', path: '/today-earn-chart' },
+    { id: 'winningInfo', label: 'Winning Information', icon: '🏆', path: '/winning-information' },
+    
+    { id: 'history', label: 'History', icon: '📄', path: '/history' },
+    { id: 'notification', label: 'Notification', icon: '🔔', path: '/notification', hasDot: true },
+    { id: 'liveChart', label: '24/7 Live Chart', icon: '📈', path: '/live-chart' },
+    { id: 'adminChart', label: "Admin's Chart", icon: '👨‍💼', path: '/admin-chart' },
   ];
 
   return (
@@ -70,11 +86,11 @@ const SidebarComponent = ({ isOpen, onClose }) => {
                   <span className="text-white">👤</span>
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium">Samual01</p>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-xs text-green-400">20</span>
-                    <span className="text-xs text-purple-300">|</span>
-                    <span className="text-xs text-green-400">10,000.00</span>
+                  <p className="text-sm font-medium">USERNAME</p>
+                  <p className="text-xs text-purple-300">ID: 12345678</p>
+                  <div className="flex items-center space-x-2 mt-1">
+                    <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                    <span className="text-xs text-green-400">Online</span>
                   </div>
                 </div>
               </div>
@@ -101,6 +117,31 @@ const SidebarComponent = ({ isOpen, onClose }) => {
                 </Link>
               ))}
 
+              {/* Game Categories */}
+              <div className="mt-6">
+                <h3 className="text-xs text-purple-300 mb-2">Game Categories</h3>
+                <div className="space-y-1">
+                  {gameCategories.map((item) => (
+                    <Link
+                      key={item.id}
+                      to={item.path}
+                      onClick={() => {
+                        setActiveMenu(item.id);
+                        onClose(); // Close sidebar on mobile when item is clicked
+                      }}
+                      className={`w-full flex items-center space-x-2 px-3 py-1 text-sm transition-colors ${
+                        activeMenu === item.id
+                          ? 'text-purple-400 bg-purple-800 rounded'
+                          : 'text-purple-200 hover:text-white'
+                      }`}
+                    >
+                      <span className="text-purple-400">{item.icon}</span>
+                      <span>{item.label}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
               {/* Winning Information Section */}
               <div className="mt-6">
                 <button
@@ -119,13 +160,27 @@ const SidebarComponent = ({ isOpen, onClose }) => {
                 {winningInfoExpanded && (
                   <div className="ml-6 mt-2 space-y-1">
                     {winningInfoItems.map((item) => (
-                      <button
+                      <Link
                         key={item.id}
-                        className="w-full flex items-center space-x-3 px-3 py-1 text-xs text-purple-300 hover:text-white"
+                        to={item.path}
+                        onClick={() => {
+                          setActiveMenu(item.id);
+                          onClose(); // Close sidebar on mobile when item is clicked
+                        }}
+                        className={`w-full flex items-center justify-between px-3 py-1 text-xs ${
+                          activeMenu === item.id
+                            ? 'text-purple-400 bg-purple-800 rounded'
+                            : 'text-purple-300 hover:text-white'
+                        }`}
                       >
-                        <span>{item.icon}</span>
-                        <span>{item.label}</span>
-                      </button>
+                        <div className="flex items-center space-x-3">
+                          <span>{item.icon}</span>
+                          <span>{item.label}</span>
+                        </div>
+                        {item.hasDot && (
+                          <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                        )}
+                      </Link>
                     ))}
                   </div>
                 )}
@@ -166,11 +221,11 @@ const SidebarComponent = ({ isOpen, onClose }) => {
                 <span className="text-white">👤</span>
               </div>
               <div className="flex-1">
-                <p className="text-sm font-medium">Samual01</p>
-                <div className="flex items-center space-x-2">
-                  <span className="text-xs text-green-400">20</span>
-                  <span className="text-xs text-purple-300">|</span>
-                  <span className="text-xs text-green-400">10,000.00</span>
+                <p className="text-sm font-medium">USERNAME</p>
+                <p className="text-xs text-purple-300">ID: 12345678</p>
+                <div className="flex items-center space-x-2 mt-1">
+                  <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                  <span className="text-xs text-green-400">Online</span>
                 </div>
               </div>
             </div>
@@ -194,6 +249,28 @@ const SidebarComponent = ({ isOpen, onClose }) => {
               </Link>
             ))}
 
+            {/* Game Categories */}
+            <div className="mt-6">
+              <h3 className="text-xs text-purple-300 mb-2">Game Categories</h3>
+              <div className="space-y-1">
+                {gameCategories.map((item) => (
+                  <Link
+                    key={item.id}
+                    to={item.path}
+                    onClick={() => setActiveMenu(item.id)}
+                    className={`w-full flex items-center space-x-2 px-3 py-1 text-sm transition-colors ${
+                      activeMenu === item.id
+                        ? 'text-purple-400 bg-purple-800 rounded'
+                        : 'text-purple-200 hover:text-white'
+                    }`}
+                  >
+                    <span className="text-purple-400">{item.icon}</span>
+                    <span>{item.label}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
             {/* Winning Information Section */}
             <div className="mt-6">
               <button
@@ -212,13 +289,24 @@ const SidebarComponent = ({ isOpen, onClose }) => {
               {winningInfoExpanded && (
                 <div className="ml-6 mt-2 space-y-1">
                   {winningInfoItems.map((item) => (
-                    <button
+                    <Link
                       key={item.id}
-                      className="w-full flex items-center space-x-3 px-3 py-1 text-xs text-purple-300 hover:text-white"
+                      to={item.path}
+                      onClick={() => setActiveMenu(item.id)}
+                      className={`w-full flex items-center justify-between px-3 py-1 text-xs ${
+                        activeMenu === item.id
+                          ? 'text-purple-400 bg-purple-800 rounded'
+                          : 'text-purple-300 hover:text-white'
+                      }`}
                     >
-                      <span>{item.icon}</span>
-                      <span>{item.label}</span>
-                    </button>
+                      <div className="flex items-center space-x-3">
+                        <span>{item.icon}</span>
+                        <span>{item.label}</span>
+                      </div>
+                      {item.hasDot && (
+                        <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                      )}
+                    </Link>
                   ))}
                 </div>
               )}

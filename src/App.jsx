@@ -12,6 +12,8 @@ import TransactionComponent from './components/TransactionComponent';
 import ActivityComponent from './components/ActivityComponent';
 import TRXComponent from './components/TRXComponent';
 import WinningInformationComponent from './components/WinningInformationComponent';
+import TodayEarnChartComponent from './components/TodayEarnChartComponent';
+import LotteryComponent from './components/LotteryComponent';
 import './App.css';
 
 function App() {
@@ -89,9 +91,19 @@ function App() {
               <TRXComponent />
             </LayoutComponent>
           } />
+          <Route path="/lottery" element={
+            <LayoutComponent>
+              <LotteryComponent />
+            </LayoutComponent>
+          } />
           <Route path="/winning-information" element={
             <LayoutComponent>
               <WinningInformationComponent />
+            </LayoutComponent>
+          } />
+          <Route path="/today-earn-chart" element={
+            <LayoutComponent>
+              <TodayEarnChartComponent />
             </LayoutComponent>
           } />
           
